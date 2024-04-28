@@ -1,0 +1,7 @@
+model: gpt-3
+embedding_model: gte
+index_engine: hnswlib
+query_rewrite:
+  - expand
+  - reform
+

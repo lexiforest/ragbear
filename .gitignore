@@ -1,0 +1,5 @@
+dist/
+ragbear.egg-info/
+**/__pycache__
+data/
+.DS_Store
