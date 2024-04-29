@@ -1,17 +1,37 @@
 # 🐻 Ragbear
 
+`ragbear`, short for RAG Bear, is an academic oriented RAG framework for building retrieval
+enhanced applications.
+
 ## Why
 
-RAG is simple, as simple as the following 10 lines of code:
+[existing solutions are too heavy](link to reddit).
+
+But RAG should be simple, as simple as the following lines of code:
 
 ```py
+DEFAULT_PROMPT = """Please answer the question according to the references.
 
+Question: {question}
+
+References: {docs}
+"""
+
+question = "Has tiktok been banned in the US?"
+
+docs = get_docs(question)
+
+prompt = DEFAULT_PROMPT.format(question=question, "\n".join(docs))
+
+completion = openai.chat.completion.create({..., prompt, ...})
+
+print(completion.choices[0].message.content)
 ```
 
-With `ragbear`, it's even simpler:
+With `ragbear`, it's **even simpler**:
 
 ```py
-ragbear.query("Who is th father of Luke Skywalker?")
+ragbear.query("Has tiktok been banned in the US?")
 ```
 
 But a lot fancier, too:
@@ -30,7 +50,6 @@ ragbear.query(
 ```
 
 But you will need to optimize towards your academic or commercial goals, you need a framework.
-However, [existing solutions are too heavy](link to reddit).
 
 Enter Ragbear, we follow the above pattern closely, but give you options to swap each parts
 of the pipeline. The code is concise and straightforward, no useless wrappers around wrappers.
