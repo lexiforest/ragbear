@@ -1,9 +1,9 @@
 from contextlib import suppress
 from typing import List, Literal, Optional, TypedDict, Union
-from .query.prompts import format_query
-from .model import get_openai_client
-from .database.remote.duckduckgo import get_duckduckgo_results
 
+from .index.remote.duckduckgo import get_duckduckgo_results
+from .model import get_openai_client
+from .synthesis.prompts import format_query
 
 with suppress(ImportError):
     pass
@@ -20,6 +20,29 @@ RerankType = Literal["similarity", "oldest", "newest"]
 RewriteType = Literal["query2doc"]
 
 
+class Bear:
+
+    def __init__(
+        self,
+        model: str = "llama2",
+        base_url: str = "http://localhost:11434/v1/",
+        api_key: Optional[str] = "ollama",
+        source: Optional[SourceType] = None,
+        rerank: Optional[RerankType] = None,
+        rewrite: Optional[RewriteType] = None,
+        template: Optional[str] = None,
+        embedding_model: Optional[str] = None,
+    ): ...
+
+    def answer(self): ...
+
+    def __enter__(self): ...
+
+    def __exit__(self): ...
+
+    def __del__(self): ...
+
+
 def query(
     prompt: str,
     *,
@@ -30,7 +53,7 @@ def query(
     rerank: Optional[RerankType] = None,
     rewrite: Optional[RewriteType] = None,
     template: Optional[str] = None,
-    embedding_model: Optional[str] = None
+    embedding_model: Optional[str] = None,
 ):
     """Query the LLM, and return the summarized result.
 
@@ -51,12 +74,11 @@ def query(
     chat_completion = client.chat.completions.create(
         messages=[
             {
-                'role': 'user',
-                'content': query,
+                "role": "user",
+                "content": query,
             }
         ],
         model=model,
     )
-    # print(chat_completion)
 
     return chat_completion.choices[0].message.content
